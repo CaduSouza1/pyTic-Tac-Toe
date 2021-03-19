@@ -1,4 +1,4 @@
-from typing import List, Tuple
+
 import render
 import pygame
 import board
@@ -10,10 +10,7 @@ pygame.init()
 screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
 
-player_x_turn = 1
-player_o_turn = -1
-
-current_turn = player_x_turn
+current_turn = board.BoardCell.PLAYER_X
 
 row_count, colum_count = 3, 3
 game_board = [
@@ -33,15 +30,14 @@ while run:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             row, colum = board.GetMouseCell(mouse_x, mouse_y, cell_width, cell_height)
-
-            if current_turn == player_x_turn:
-                game_board[row][colum] = board.BoardCell.PLAYER_X
-            else:
-                game_board[row][colum] = board.BoardCell.PLAYER_O
+            game_board[row][colum] = current_turn
 
             if board.CheckPlayerWon(current_turn, game_board):
                 sys.exit()
-            current_turn *= -1
+
+            current_turn = (current_turn + 1) % len(board.BoardCell)
+            if current_turn == board.BoardCell.EMPTY:
+                current_turn += 1
 
     screen.fill((0, 0, 0))
     render.DrawBoard(screen, cell_width, cell_height, game_board, (255, 255, 255))
