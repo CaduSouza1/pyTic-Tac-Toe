@@ -1,6 +1,7 @@
 from typing import List, Tuple
 from pygame.surface import Surface
 import pygame.draw
+import pygame.font
 from board import BoardCell
 
 
@@ -49,5 +50,8 @@ def DrawPlayerO(surface: Surface, x: int, y: int, radius: int, color: Tuple[int,
     pygame.draw.circle(surface, (0, 0, 0), (x, y), radius - 10)
 
 
-def BlitText(surface: Surface, text: str):
-    pass
+def BlitText(surface: Surface, font_obj: pygame.font.Font, x: int, y: int, text: str, color: Tuple[int, int, int]):
+    surface.blit(
+        font_obj.render(text, False, color), 
+        (x, y)
+    )
