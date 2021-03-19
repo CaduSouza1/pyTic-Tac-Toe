@@ -1,7 +1,8 @@
 from typing import List, Tuple
+from enum import IntEnum
 
 
-class BoardCell:
+class BoardCell(IntEnum):
     EMPTY = 0
     PLAYER_X = 1
     PLAYER_O = 2
@@ -14,22 +15,31 @@ def GetMouseCell(mouse_x: int, mouse_y: int, cell_width: int, cell_height: int) 
     return (row, colum)
 
 
-def GetRows(game_board: List[List[BoardCell]]) -> List[BoardCell]:
-    return [game_board[row] for row in range(0, len(game_board))]
-
-# TODO: This function doesn't return the columns, it returns the rows
-def GetColumns(game_board: List[List[BoardCell]]) -> List[BoardCell]:
-    return [game_board[0:len(game_board)][colum] for colum in range(0, len(game_board))]
-
-# TODO: Make the return only use 1 loop
-def GetDiagonals(game_board: List[List[BoardCell]]) -> List[BoardCell]:
-    return [
-        [game_board[i][i] for i in range(0, len(game_board))], # main diagonal
-        [game_board[len(game_board) - 1 - i][i] for i in range(0, len(game_board))] # reverse diagonal
-    ]
+def GetRows(game_board: List[List[BoardCell]]) -> List[List[BoardCell]]:
+    return [row for row in game_board]
 
 
-def CheckPlayerWon(player: int, game_board: List[List[BoardCell]]):
+def GetColumns(game_board: List[List[BoardCell]]) -> List[List[BoardCell]]:
+    columns = []
+
+    for i in range(0, len(game_board)):
+        columns.append([row[i] for row in game_board])
+
+    return columns
+
+
+def GetDiagonals(game_board: List[List[BoardCell]]) -> List[List[BoardCell]]:
+    main_diag = []
+    reverse_diag = []
+    
+    for i in range(0, len(game_board)):
+        main_diag.append(game_board[i][i])
+        reverse_diag.append(game_board[len(game_board) - 1 - i][i])
+
+    return main_diag, reverse_diag
+
+
+def CheckPlayerWon(player: int, game_board: List[List[BoardCell]]) -> bool:
     for row in GetRows(game_board):
         if all(map(lambda p: p == player, row)):
             return True
