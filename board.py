@@ -38,18 +38,18 @@ def GetDiagonals(game_board: List[List[BoardCell]]) -> List[List[BoardCell]]:
 
     return main_diag, reverse_diag
 
-
-def CheckPlayerWon(player: int, game_board: List[List[BoardCell]]) -> bool:
+ 
+def CheckPlayerWon(player: int, game_board: List[List[BoardCell]]) -> Tuple[bool, int]:
     for row in GetRows(game_board):
         if all(map(lambda p: p == player, row)):
-            return True
+            return player
     
     for colum in GetColumns(game_board):
         if all(map(lambda p: p == player, colum)):
-            return True
+            return player
     
     for diagonal in GetDiagonals(game_board):
         if all(map(lambda p: p == player, diagonal)):
-            return True
+            return player
 
-    return False
+    return 0
